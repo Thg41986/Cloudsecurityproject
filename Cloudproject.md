@@ -7,68 +7,9 @@ https://drive.google.com/file/d/1yTiZINjQapQHTutJSVuUJNE9dBSwcV1-/view?usp=shari
   - install-elk.yml
 
 - ---
-  - name: Configure Elk VM with Docker
-    hosts: elk
-    remote_user: sysadmin
-    become: true
-    tasks:
-      # Use apt module
-      - name: Install docker.io
-        apt:
-          update_cache: yes
-          force_apt_get: yes
-          name: docker.io
-          state: present
+  ![image-20211212143539368](C:\Users\terre\AppData\Roaming\Typora\typora-user-images\image-20211212143539368.png)
 
-        # Use apt module
-      - name: Install python3-pip
-        apt:
-          force_apt_get: yes
-          name:  python3-pip
-          state:  present
-
-        # Use pip module (It will default to pip3)
-      - name: Install Docker module
-        pip:
-          name: docker
-          state: present
-
-        # Use command module
-      - name: Increase virtual memory
-        command: sysctl -w vm.max_map_count=262144
-
-        # Use sysctl module
-      - name: Use more memory
-        sysctl:
-          name: vm.max_map_count
-          value: 262144
-          state: present
-          reload: yes
-
-        # Use docker_container module
-      - name: download and launch a docker elk container
-        docker_container:
-          name: elk
-          image: sebp/elk:761
-          state: started
-          restart_policy: always
-          # Please list the ports that ELK runs on
-          published_ports:
-            -  5601:5601
-            -  9200:9200
-            -  5044:5044
-
-        # Use systemd module
-      - name: Enable service docker on boot
-
-This document contains the following details:
-- Description of the Topology
-- Access Policies
-- ELK Configuration
-  - Beats in Use
-  - Machines Being Monitored
-- How to Use the Ansible Build
-
+![image-20211212143836201](C:\Users\terre\AppData\Roaming\Typora\typora-user-images\image-20211212143836201.png)
 
 ### Description of the Topology
 
@@ -145,13 +86,37 @@ These Beats allow us to collect the following information from each machine:
 In order to use the playbook, you will need to have an Ansible control node already configured. Assuming you have such a control node provisioned: 
 
 SSH into the control node and follow the steps below:
-- Copy the _____ file to _____.
-- Update the _____ file to include...
-- Run the playbook, and navigate to ____ to check that the installation worked as expected.
+- make sure your azure is started
 
-_TODO: Answer the following questions to fill in the blanks:_
-- _Which file is the playbook? Where do you copy it?_
-- _Which file do you update to make Ansible run the playbook on a specific machine? How do I specify which machine to install the ELK server on versus which to install Filebeat on?_
-- _Which URL do you navigate to in order to check that the ELK server is running?
+- open git bash
 
-_As a **Bonus**, provide the specific commands the user will need to run to download the playbook, update the files, etc._
+-  ssh -i ~/.ssh/id_rsa_jumpbox RedAdmin@20.124.253.63
+
+- start your docker container "sudo docker start kind_chebyshev "
+
+- after start use '' sudo docker attach kind_chebyshev" note: you should now have "Root@''
+
+- now use "cd /etc/ansible/"  
+
+- to create a playbook lets create a file by "touch filebeat-config.yml  "
+
+- now we will use "nano filebeat-config.yml"  filebeat-playbook.yml  
+
+  ![image-20211212135130387](C:\Users\terre\AppData\Roaming\Typora\typora-user-images\image-20211212135130387.png)
+
+  
+
+- save and exit out of nano by "ctrl x" press "y" for yes then press enter
+
+- next we will set up the playbook start by making a file "touch filebeat-playbook.yml"
+
+- use nano filebeat-playbook.yml use resource file to copy your play book to minimize errors
+
+-  ![image-20211212141509155](C:\Users\terre\AppData\Roaming\Typora\typora-user-images\image-20211212141509155.png)
+
+- save and exit out of nano by "ctrl x" press "y" for yes then press enter
+
+- now we can can run filebeat-playbook.yml by using "ansible-playbook filebeat-playbook.yml"
+
+- ![image-20211212142348093](C:\Users\terre\AppData\Roaming\Typora\typora-user-images\image-20211212142348093.png)
+
